@@ -1,7 +1,10 @@
 <script>
   import { projects, components } from "../data/stores";
+  import { onMount } from "svelte";
+
   export let folder;
   let open;
+  onMount(projects.update);
 </script>
 
 <nav

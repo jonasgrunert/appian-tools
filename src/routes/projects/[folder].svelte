@@ -26,14 +26,18 @@
 </script>
 
 <Layout {folder} project={folder}>
-  <Button
-    color="warning"
-    right
-    onClick={() => {
-      deploy = true;
-    }}>
-    Deploy
-  </Button>
+  <div class="field is-grouped is-grouped-right">
+    <p class="control">
+      <Button
+        color="warning"
+        right
+        onClick={() => {
+          deploy = true;
+        }}>
+        Deploy
+      </Button>
+    </p>
+  </div>
   <ProjectDetails
     readonly={true}
     onSave={projects.update}
