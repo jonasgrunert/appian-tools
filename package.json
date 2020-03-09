@@ -1,7 +1,7 @@
 {
   "name": "appian-tools",
   "description": "A handy environment to develop custom components for Appian",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "author": "joansgrunert",
   "repository": "github:jonasgrunert/appian-tools",
