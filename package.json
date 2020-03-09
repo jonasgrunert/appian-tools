@@ -1,9 +1,11 @@
 {
   "name": "appian-tools",
   "description": "A handy environment to develop custom components for Appian",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "author": "joansgrunert",
+  "repository": "github:jonasgrunert/appian-tools",
+  "homepage": "https://github.com/jonasgrunert/appian-tools",
   "scripts": {
     "dev": "sapper dev",
     "build": "sapper build --legacy",
