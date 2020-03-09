@@ -1,0 +1,12 @@
+.DS_Store
+/node_modules/
+/src/node_modules/@sapper/
+yarn-error.log
+/cypress/screenshots/
+example-plugin
+/static/index.html
+/static/src.*.css.map
+/static/src.*.js.map
+/static/src.*.css
+/static/src.*.js
+/__sapper__/dev
