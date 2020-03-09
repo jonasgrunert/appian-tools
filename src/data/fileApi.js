@@ -69,7 +69,9 @@ function restateComponent(component) {
 
 export function getFile(folder) {
   return promises
-    .readFile(`./${folder}/appian-component-plugin.xml`, { encoding: "UTF-8" })
+    .readFile(`${process.cwd()}/${folder}/appian-component-plugin.xml`, {
+      encoding: "UTF-8"
+    })
     .then(c => parse(c, xmlOptions)["appian-component-plugin"])
     .then(c => ({
       file: folder,
@@ -91,7 +93,7 @@ export function getFile(folder) {
 }
 
 export async function deleteFile(folder) {
-  rmdir(`./${folder}`, {}, err => {
+  rmdir(`${process.cwd()}/${folder}`, {}, err => {
     if (err) throw err;
   });
 }
@@ -115,7 +117,7 @@ export async function writeFile(
   try {
     current = await getFile(folder);
   } catch {
-    await promises.mkdir(`./${folder}`, { recursive: true });
+    await promises.mkdir(`${process.cwd()}/${folder}`, { recursive: true });
   }
   const data = {
     "appian-component-plugin": {
@@ -141,7 +143,7 @@ export async function writeFile(
   };
   const parser = new j2xParser(xmlOptions);
   await promises.writeFile(
-    `./${folder}/appian-component-plugin.xml`,
+    `${process.cwd()}/${folder}/appian-component-plugin.xml`,
     parser.parse(data, {
       attributeNamePrefix: "@_",
       ignoreAttributes: false,
@@ -259,11 +261,14 @@ export async function saveParameter(folder, component, param, config) {
 }
 
 export async function getHTML(folder, component) {
-  const bundler = new Bundler(`./${folder}/${component}/src/index.html`, {
-    outDir: "./static",
-    cacheDir: `./${folder}/${component}/.cache`,
-    watch: true
-  });
+  const bundler = new Bundler(
+    `${process.cwd()}/${folder}/${component}/src/index.html`,
+    {
+      outDir: "./static",
+      cacheDir: `${process.cwd()}/${folder}/${component}/.cache`,
+      watch: true
+    }
+  );
   return bundler.bundle().catch(console.error);
 }
 
@@ -305,9 +310,9 @@ export async function getZip(folder, config) {
   await writeFile(folder, file);
   await Promise.all(
     components.map(({ name, version }) =>
-      new Bundler(`./${folder}/${name}/src/index.html`, {
+      new Bundler(`${process.cwd()}/${folder}/${name}/src/index.html`, {
         watch: false,
-        outDir: `./${folder}/${name}/dist${getMajor(version)}`,
+        outDir: `${process.cwd()}/${folder}/${name}/dist${getMajor(version)}`,
         minify: true,
         cache: false
       }).bundle()
@@ -315,7 +320,7 @@ export async function getZip(folder, config) {
   );
   const zip = new JSZip();
   const xml = await promises.readFile(
-    `./${folder}/appian-component-plugin.xml`,
+    `${process.cwd()}/${folder}/appian-component-plugin.xml`,
     { encoding: "UTF-8" }
   );
   zip.file("appian-component-plugin.xml", xml);
@@ -341,12 +346,12 @@ export async function getZip(folder, config) {
     components.map(async c => {
       const f = zip.folder(c.name);
       const dirs = await promises
-        .readdir(`./${folder}/${c.name}`)
+        .readdir(`${process.cwd()}/${folder}/${c.name}`)
         .then(s => s.filter(n => n.startsWith("dist")));
       return await Promise.all(
         dirs.map(d =>
           addDirectory(
-            `./${folder}/${c.name}/${d}`,
+            `${process.cwd()}/${folder}/${c.name}/${d}`,
             f,
             `v${getMajor(c.version)}`
           )
